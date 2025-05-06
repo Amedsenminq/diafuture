@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diaen Pro - Diyabet Yönetim Sistemi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-md py-4 px-6 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-heartbeat text-2xl text-indigo-600"></i>
+        <span class="text-xl font-bold text-indigo-600">Diaen Pro</span>
+      </div>
+      <div class="hidden md:flex space-x-6">
+        <a href="#dashboard" class="text-indigo-600 font-medium hover:text-indigo-800 transition">Anasayfa</a>
+        <a href="#glucose" class="text-gray-600 hover:text-indigo-600 transition">Şeker Takibi</a>
+        <a href="#medication" class="text-gray-600 hover:text-indigo-600 transition">İlaçlar</a>
+        <a href="#nutrition" class="text-gray-600 hover:text-indigo-600 transition">Beslenme</a>
+        <a href="#reports" class="text-gray-600 hover:text-indigo-600 transition">Raporlar</a>
+        <a href="#ai" class="text-gray-600 hover:text-indigo-600 transition">AI Asistan</a>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="relative">
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center">
+            <i class="fas fa-bell mr-2"></i>
+            <span class="hidden md:inline">Bildirimler</span>
+            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+          </button>
+        </div>
+        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center">
+          <i class="fas fa-user-circle mr-2"></i>
+          <span class="hidden md:inline">Profil</span>
+        </button>
+        <button class="md:hidden text-gray-600">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <!-- Welcome Section -->
+    <section id="dashboard" class="mb-12 animate-fadeIn">
+      <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+          <div class="mb-6 md:mb-0 md:w-1/2">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">Merhaba, <span class="text-indigo-600">Ahmet Bey</span> 👋</h1>
+            <p class="text-gray-600 mb-6">Diyabet yönetiminiz için bugünkü özetiniz:</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-6">
+              <div class="bg-blue-50 p-4 rounded-xl border-l-4 border-blue-500">
+                <p class="text-sm text-blue-600 mb-1">Son Ölçüm</p>
+                <p class="text-2xl font-bold text-blue-800">142 <span class="text-sm">mg/dL</span></p>
+                <p class="text-xs text-green-600 mt-1"><i class="fas fa-arrow-down mr-1"></i> Normal</p>
+              </div>
+              <div class="bg-purple-50 p-4 rounded-xl border-l-4 border-purple-500">
+                <p class="text-sm text-purple-600 mb-1">HbA1c</p>
+                <p class="text-2xl font-bold text-purple-800">6.2%</p>
+                <p class="text-xs text-green-600 mt-1"><i class="fas fa-check mr-1"></i> Hedefte</p>
+              </div>
+              <div class="bg-green-50 p-4 rounded-xl border-l-4 border-green-500">
+                <p class="text-sm text-green-600 mb-1">Aktivite</p>
+                <p class="text-2xl font-bold text-green-800">8,240 <span class="text-sm">adım</span></p>
+                <p class="text-xs text-green-600 mt-1"><i class="fas fa-check-circle mr-1"></i> Tamamlandı</p>
+              </div>
+              <div class="bg-yellow-50 p-4 rounded-xl border-l-4 border-yellow-500">
+                <p class="text-sm text-yellow-600 mb-1">Su Tüketimi</p>
+                <p class="text-2xl font-bold text-yellow-800">1.8 <span class="text-sm">L</span></p>
+                <p class="text-xs text-red-500 mt-1"><i class="fas fa-exclamation-triangle mr-1"></i> Eksik</p>
+              </div>
+            </div>
+            
+            <div class="flex space-x-4">
+              <button class="bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 transition flex items-center animate-pulse">
+                <i class="fas fa-plus mr-2"></i>
+                <span>Yeni Ölçüm Ekle</span>
+              </button>
+              <button class="bg-white border border-indigo-600 text-indigo-600 px-6 py-3 rounded-xl hover:bg-indigo-50 transition flex items-center">
+                <i class="fas fa-notes-medical mr-2"></i>
+                <span>Hızlı Not</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="md:w-1/2 flex justify-center">
+            <div class="relative w-64 h-64 md:w-80 md:h-80">
+              <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_5tkzkblw.json" background="transparent" speed="1" loop autoplay class="animate-float"></lottie-player>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Glucose Tracking -->
+    <section id="glucose" class="mb-12 animate-fadeIn" style="animation-delay: 0.2s;">
+      <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+            <i class="fas fa-chart-line text-indigo-600 mr-3"></i>
+            Kan Şekeri Takibi
+          </h2>
+          <div class="flex space-x-2">
+            <button class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm">Günlük</button>
+            <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-lg text-sm">Haftalık</button>
+            <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-lg text-sm">Aylık</button>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div class="bg-indigo-50 p-4 rounded-xl">
+            <canvas id="glucoseChart" height="250"></canvas>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <h3 class="font-semibold text-gray-700 mb-3 flex justify-between items-center">
+              <span>Şeker Ölçüm Geçmişi</span>
+              <button class="text-indigo-600 text-sm flex items-center">
+                <i class="fas fa-plus mr-1"></i>
+                <span>Ekle</span>
+              </button>
+            </h3>
+            <div class="space-y-3 max-h-64 overflow-y-auto pr-2 custom-scroll">
+              <div class="flex justify-between items-center p-2 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                <div>
+                  <p class="font-medium">Sabah Açlık</p>
+                  <p class="text-xs text-gray-500">Bugün, 08:15</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm font-medium">142 mg/dL</span>
+                  <button class="ml-2 text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-green-50 rounded-lg border-l-4 border-green-500">
+                <div>
+                  <p class="font-medium">Öğle Yemeği Sonrası</p>
+                  <p class="text-xs text-gray-500">Dün, 14:30</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-medium">158 mg/dL</span>
+                  <button class="ml-2 text-green-600 hover:text-green-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                <div>
+                  <p class="font-medium">Akşam Yemeği Öncesi</p>
+                  <p class="text-xs text-gray-500">Dün, 18:45</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-sm font-medium">121 mg/dL</span>
+                  <button class="ml-2 text-yellow-600 hover:text-yellow-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-red-50 rounded-lg border-l-4 border-red-500">
+                <div>
+                  <p class="font-medium">Gece Ölçümü</p>
+                  <p class="text-xs text-gray-500">Dün, 23:20</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm font-medium">210 mg/dL</span>
+                  <button class="ml-2 text-red-600 hover:text-red-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                <div>
+                  <p class="font-medium">Sabah Açlık</p>
+                  <p class="text-xs text-gray-500">Dün, 08:10</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm font-medium">135 mg/dL</span>
+                  <button class="ml-2 text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <h3 class="font-semibold text-gray-700 mb-3">Şeker Analizi</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Günlük Ortalama</span>
+                  <span class="text-sm font-medium text-gray-700">148 mg/dL</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-blue-600 h-2.5 rounded-full" style="width: 70%"></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Hedef: 70-180 mg/dL aralığı</p>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Hedef Aralıkta Kalma</span>
+                  <span class="text-sm font-medium text-gray-700">82%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-green-600 h-2.5 rounded-full" style="width: 82%"></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Hedef: >70%</p>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Hipoglisemi</span>
+                  <span class="text-sm font-medium text-gray-700">2%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 2%"></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Hedef: <%5</p>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-sm font-medium text-gray-700">Hiperglisemi</span>
+                  <span class="text-sm font-medium text-gray-700">16%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div class="bg-red-600 h-2.5 rounded-full" style="width: 16%"></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Hedef: <%25</p>
+              </div>
+              
+              <div class="pt-4 border-t border-gray-200">
+                <div id="timeInRangeChart" style="height: 150px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-indigo-50 rounded-xl p-4">
+          <div class="flex items-center">
+            <div class="bg-indigo-100 p-3 rounded-full mr-4">
+              <i class="fas fa-robot text-indigo-600 text-xl"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800">Yapay Zeka Önerisi</h4>
+              <p class="text-gray-600">Son gece ölçümünüz yüksek çıktı. Akşam yemeğinde karbonhidrat alımını azaltmayı ve yemekten sonra 15 dakikalık bir yürüyüş yapmayı deneyebilirsiniz. Ayrıca gece ara öğününüzü gözden geçirmenizi öneririm.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Medication & Calendar -->
+    <section id="medication" class="mb-12 animate-fadeIn" style="animation-delay: 0.4s;">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Medication Tracker - Enhanced -->
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+              <i class="fas fa-pills text-indigo-600 mr-3"></i>
+              İlaç Takibi
+            </h2>
+            <div class="flex space-x-2">
+              <button class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm flex items-center" id="addMedicationBtn">
+                <i class="fas fa-plus mr-1"></i>
+                <span>Ekle</span>
+              </button>
+              <button class="bg-white border border-indigo-600 text-indigo-600 px-3 py-1 rounded-lg text-sm flex items-center">
+                <i class="fas fa-history mr-1"></i>
+                <span>Geçmiş</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Medication Tabs -->
+          <div class="flex mb-6 border-b border-gray-200">
+            <button class="px-4 py-2 font-medium text-sm border-b-2 border-indigo-600 text-indigo-600">Aktif İlaçlar</button>
+            <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-indigo-600">Tüm İlaçlar</button>
+            <button class="px-4 py-2 font-medium text-sm text-gray-500 hover:text-indigo-600">Reçeteler</button>
+          </div>
+          
+          <!-- Today's Medication Schedule -->
+          <div class="mb-6">
+            <h3 class="font-semibold text-gray-700 mb-3 flex items-center">
+              <i class="fas fa-calendar-day text-indigo-500 mr-2"></i>
+              Bugünün İlaç Planı
+            </h3>
+            <div class="space-y-3">
+              <div class="flex items-center p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                <div class="bg-blue-100 p-2 rounded-full mr-3">
+                  <i class="fas fa-syringe text-blue-600"></i>
+                </div>
+                <div class="flex-grow">
+                  <h4 class="font-medium">Lantus (Insulin Glargine)</h4>
+                  <p class="text-sm text-gray-600">20 ünite, her gece 22:00</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs mr-2">Alındı</span>
+                  <button class="text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="flex items-center p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                <div class="bg-purple-100 p-2 rounded-full mr-3">
+                  <i class="fas fa-pills text-purple-600"></i>
+                </div>
+                <div class="flex-grow">
+                  <h4 class="font-medium">Metformin</h4>
+                  <p class="text-sm text-gray-600">1000 mg, sabah & akşam</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs mr-2">Sabah alındı</span>
+                  <button class="text-purple-600 hover:text-purple-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="flex items-center p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                <div class="bg-yellow-100 p-2 rounded-full mr-3">
+                  <i class="fas fa-syringe text-yellow-600"></i>
+                </div>
+                <div class="flex-grow">
+                  <h4 class="font-medium">Novorapid (Insulin Aspart)</h4>
+                  <p class="text-sm text-gray-600">Öğün öncesi, karbonhidrata göre</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs mr-2">Öğle için bekliyor</span>
+                  <button class="text-yellow-600 hover:text-yellow-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="flex items-center p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                <div class="bg-green-100 p-2 rounded-full mr-3">
+                  <i class="fas fa-heartbeat text-green-600"></i>
+                </div>
+                <div class="flex-grow">
+                  <h4 class="font-medium">Omega-3</h4>
+                  <p class="text-sm text-gray-600">1000 mg, günde 1 kez</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs mr-2">Alınmadı</span>
+                  <button class="text-green-600 hover:text-green-800">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Medication Statistics -->
+          <div class="bg-indigo-50 rounded-xl p-4">
+            <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+              <i class="fas fa-chart-pie text-indigo-600 mr-2"></i>
+              İlaç İstatistikleri
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-white p-3 rounded-lg shadow-sm">
+                <p class="text-sm text-gray-600 mb-1">Doğru Zamanda Alınma</p>
+                <p class="text-2xl font-bold text-indigo-700">92%</p>
+                <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                  <div class="bg-indigo-600 h-2 rounded-full" style="width: 92%"></div>
+                </div>
+              </div>
+              <div class="bg-white p-3 rounded-lg shadow-sm">
+                <p class="text-sm text-gray-600 mb-1">Unutulan İlaçlar</p>
+                <p class="text-2xl font-bold text-red-600">3</p>
+                <p class="text-xs text-gray-500 mt-1">Bu ay</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Add Medication Modal (Hidden by default) -->
+          <div id="addMedicationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl p-6 max-w-md w-full animate-slideInRight">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Yeni İlaç Ekle</h3>
+                <button id="closeMedicationModal" class="text-gray-500 hover:text-gray-700">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              
+              <form class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">İlaç Adı</label>
+                  <input type="text" class="w-full form-input px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Doz</label>
+                    <input type="text" class="w-full form-input px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" placeholder="Örn: 500 mg">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tür</label>
+                    <select class="w-full form-input px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                      <option>Tablet</option>
+                      <option>Şurup</option>
+                      <option>İnsülin</option>
+                      <option>Diğer</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Alım Sıklığı</label>
+                  <select class="w-full form-input px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    <option>Günde 1 kez</option>
+                    <option>Günde 2 kez</option>
+                    <option>Günde 3 kez</option>
+                    <option>Haftada 1 kez</option>
+                    <option>Öğün öncesi</option>
+                    <option>Öğün sonrası</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Başlangıç Tarihi</label>
+                  <input type="date" class="w-full form-input px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+                
+                <div class="flex justify-end space-x-3 pt-4">
+                  <button type="button" id="cancelMedication" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">İptal</button>
+                  <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Kaydet</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Calendar & Appointments -->
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+              <i class="fas fa-calendar-alt text-indigo-600 mr-3"></i>
+              Takvim & Randevular
+            </h2>
+            <div class="flex space-x-2">
+              <button class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm flex items-center" id="addAppointmentBtn">
+                <i class="fas fa-plus mr-1"></i>
+                <span>Ekle</span>
+              </button>
+              <button class="bg-white border border-indigo-600 text-indigo-600 px-3 py-1 rounded-lg text-sm flex items-center">
+                <i class="fas fa-sync-alt mr-1"></i>
+                <span>Senkronize Et</span>
+              </button>
+            </div>
+          </div>
+          
+          <div id="calendar" class="mb-6"></div>
+          
+          <div class="space-y-3">
+            <div class="flex items-start p-3 bg-pink-50 rounded-lg border-l-4 border-pink-500">
+              <div class="bg-pink-100 p-2 rounded-full mr-3 mt-1">
+                <i class="fas fa-user-md text-pink-600"></i>
+              </div>
+              <div>
+                <h4 class="font-medium">Endokrinoloji Kontrolü</h4>
+                <p class="text-sm text-gray-600">Yarın, 14:00 - Dr. Ayşe Demir</p>
+                <p class="text-xs text-gray-500 mt-1">Medical Park Hastanesi, Endokrinoloji Bölümü</p>
+                <div class="flex space-x-2 mt-2">
+                  <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full text-xs">Doktor</span>
+                  <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Önemli</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex items-start p-3 bg-indigo-50 rounded-lg border-l-4 border-indigo-500">
+              <div class="bg-indigo-100 p-2 rounded-full mr-3 mt-1">
+                <i class="fas fa-flask text-indigo-600"></i>
+              </div>
+              <div>
+                <h4 class="font-medium">HbA1c Testi</h4>
+                <p class="text-sm text-gray-600">15 Haziran, 09:30</p>
+                <p class="text-xs text-gray-500 mt-1">Central Lab, aç karnına geliniz</p>
+                <div class="flex space-x-2 mt-2">
+                  <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-xs">Test</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex items-start p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+              <div class="bg-green-100 p-2 rounded-full mr-3 mt-1">
+                <i class="fas fa-eye text-green-600"></i>
+              </div>
+              <div>
+                <h4 class="font-medium">Göz Muayenesi</h4>
+                <p class="text-sm text-gray-600">20 Haziran, 11:00 - Dr. Mehmet Yılmaz</p>
+                <p class="text-xs text-gray-500 mt-1">Göz Merkezi, Retina Bölümü</p>
+                <div class="flex space-x-2 mt-2">
+                  <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Kontrol</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="scripts.js"></script>
+  <body class="min-h-screen flex flex-col">
+    <!-- Navigation (mevcut kısmı olduğu gibi bırakın) -->
+    <nav class="bg-white shadow-md py-4 px-6 sticky top-0 z-50">
+      ...
+    </nav>
+  
+    <!-- Main Content (mevcut içeriğiniz) -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+      ...
+    </main>
+  
+    <!-- Maskot Asistan (EN ALTTA bu kısmı ekleyin) -->
+    <div id="maskot-asistan" class="hidden">
+      <div class="maskot-temel">
+        <div class="maskot-kafa">
+          <div class="gozler">
+            <div class="goz"></div>
+            <div class="goz"></div>
+          </div>
+          <div class="gulus"></div>
+        </div>
+        <div class="konusma-balonu hidden">
+          <p id="maskot-mesaji">Merhaba! Bugün şeker ölçümünü yaptın mı? 💙</p>
+          <button id="kapat-baloon">×</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Scriptler (EN ALTTA olmalı) -->
+    <script src="scripts.js"></script>
+  </body>
+</body>
+</html>
